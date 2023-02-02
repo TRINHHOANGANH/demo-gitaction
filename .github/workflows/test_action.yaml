@@ -7,7 +7,7 @@ jobs:
       runs-on: ubuntu-latest
       steps:
         - name: Train model
-          uses: allegroai/clearml-actions-train-model@master
+          uses: TRINHHOANGANH/demo-gitaction@master
           id: train
           with:
             CLEARML_API_ACCESS_KEY: ${{ secrets.ACCESS_KEY }}
