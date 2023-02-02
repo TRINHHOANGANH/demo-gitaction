@@ -1,0 +1,10 @@
+{
+    "python.analysis.extraPaths": [
+        "./Classes/ConnectDataBase",
+        "./Classes/Global",
+        "./deep_sort/deep",
+        "./deep_sort/deep/reid",
+        "./module/yolov5/utils"
+    ]
+
+}

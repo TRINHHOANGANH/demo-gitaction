@@ -1,0 +1,8 @@
+train: H:\hoanganh\Software\VCC\Vehicle_deepsort_onnx2trt\code_convert\B1_training_model\dataset_2\dataset_2
+val: H:\hoanganh\Software\VCC\Vehicle_deepsort_onnx2trt\code_convert\B1_training_model\dataset_2\dataset_2
+
+# number of classes
+nc: 7
+
+# class names
+names: ['motorbike','truck','excavator','scooptram','roller truck','conrete truck','car']
