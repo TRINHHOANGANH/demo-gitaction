@@ -1,28 +1,42 @@
-name: 'ClearML train model'
-description: 'Clone and enqueue your task to train your model'
+# action.yml
+name: 'ClearML display model performance'
+description: 'Search ClearML for a task corresponding to the current PR and add a comment with its scalars.'
 inputs:
   CLEARML_API_ACCESS_KEY:
-    description: 'ClearML api access key (can be generated in your profile page'
+    description: 'ClearML api access key (can be generated in your profile page)'
     required: true
   CLEARML_API_SECRET_KEY:
-    description: 'ClearML api secret key (can be generated in your profile page'
+    description: 'ClearML api secret key (can be generated in your profile page)'
     required: true
   CLEARML_API_HOST:
     description: 'ClearML server api host'
     required: true
-  TASK_ID:
-    description: 'The id of the template task'
+  GH_TOKEN:
+    description: 'Github personal access token to add the comment.'
     required: true
-  QUEUE_NAME:
-    description: 'The queue name for the cloned task'
-    required: false
-    default: 'default'
-outputs:
-  TASK_STATUS:
-    description: 'The task current status'
-branding:
-  color: 'purple'
-  icon: 'monitor'
+  CLEARML_PROJECT:
+    description: 'Which project to search in for the task. When not set, will search everything which might be slower. (default: "")'
+    default: ''
+  CLEARML_TASK_NAME:
+    description: 'Which task name to search for. When not set, will search everything which might be slower. (default: "")'
+    default: ''
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
+  using: 'composite'
+  steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+    - name: Install ClearML
+      shell: bash
+      run: pip install -r ${{ github.action_path }}/requirements.txt
+    - name: Start the task
+      shell: bash
+      run: python ${{ github.action_path }}/train-model.py
+      env:
+        CLEARML_API_ACCESS_KEY: ${{ inputs.CLEARML_API_ACCESS_KEY }}
+        CLEARML_API_SECRET_KEY: ${{ inputs.CLEARML_API_SECRET_KEY }}
+        CLEARML_API_HOST: ${{ inputs.CLEARML_API_HOST }}
+        GH_TOKEN: ${{ inputs.GH_TOKEN }}
+        CLEARML_PROJECT: ${{ inputs.CLEARML_PROJECT }}
+        CLEARML_TASK_NAME: ${{ inputs.CLEARML_TASK_NAME }}
